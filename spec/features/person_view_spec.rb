@@ -80,12 +80,48 @@ describe 'the person view', type: :feature do
 		end
 
 		it 'has an add email address link' do
-			expect(page).to have_link('Add email address', href: new_email_address_path)
+			expect(page).to have_link('Add email address', href: new_email_address_path(person_id: person.id))
 		end
 
-		# it 'adds a new email address' do
-		# 	page.click_link('Add email address')
+		it 'has links to edit email addresses' do
+			person.email_addresses.each do |email_address|
+				expect(page).to have_link('Edit', href: edit_email_address_path(email_address))
+			end
+		end
 
-		# end
+		it 'has links to delete the phone numbers' do
+			person.email_addresses.each do |email_address|
+				expect(page).to have_link('Destroy', href: email_address_path(email_address))
+			end
+		end		
+
+		it 'adds a new email address' do
+			page.click_link('Add email address')
+			page.fill_in('Address', with: 'wjefojwe@abc.com')
+			page.click_button('Create Email address')
+			expect(current_path).to eq(person_path(person))
+			expect(page).to have_content('wjefojwe@abc.com')
+		end
+
+		it 'edits a email address' do
+			email_address = person.email_addresses.first
+			old_address = email_address.address
+
+			first(:link, 'Edit').click
+			page.fill_in('Address', with: 'jwoefj@abc.com')
+			page.click_button('Update Email address')
+			expect(current_path).to eq(person_path(person))
+			expect(page).to have_content('jwoefj@abc.com')
+			expect(page).to_not have_content(old_address)
+		end
+
+		it 'destroy a phone number' do
+			email_address = person.email_addresses.first
+			old_address = email_address.address
+
+			first(:link, 'Destroy').click
+			expect(current_path).to eq(person_path(person))
+			expect(page).not_to have_content(old_address)
+		end
 	end
 end

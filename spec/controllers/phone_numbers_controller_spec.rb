@@ -123,8 +123,6 @@ describe PhoneNumbersController do
       end
 
       it "redirects to the person of the phone_number" do
-        bob = Person.create(first_name: 'Bob', last_name: 'Jones')
-        valid_attributes = {number: '555-5678', person_id: bob.id}
         phone_number = PhoneNumber.create! valid_attributes
         put :update, {:id => phone_number.to_param, :phone_number => valid_attributes}, valid_session
         expect(response).to redirect_to(bob)
@@ -163,7 +161,7 @@ describe PhoneNumbersController do
     it "redirects to the phone_numbers list" do
       phone_number = PhoneNumber.create! valid_attributes
       delete :destroy, {:id => phone_number.to_param}, valid_session
-      response.should redirect_to(phone_number.person)
+      response.should redirect_to(bob)
     end
   end
 
