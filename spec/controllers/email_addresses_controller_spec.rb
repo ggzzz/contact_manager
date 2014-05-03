@@ -23,7 +23,7 @@ describe EmailAddressesController do
   # This should return the minimal set of attributes required to create a valid
   # EmailAddress. As you add validations to EmailAddress, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { { "address" => "MyString", "person_id" => "1"} }
+  let(:valid_attributes) { { "address" => "MyString", "contact_id" => "1", "contact_type" => "Person"} }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -64,7 +64,7 @@ describe EmailAddressesController do
   describe "POST create" do
     describe "with valid params" do
       let(:alice) {Person.create(first_name: 'Alice', last_name: 'Smith')}
-      let(:valid_attributes) { {address: "jwiefj@abc.com", person_id: alice.id} }
+      let(:valid_attributes) { {address: "jwiefj@abc.com", contact_id: alice.id, contact_type: 'Person'} }
       it "creates a new EmailAddress" do
         expect {
           post :create, {:email_address => valid_attributes}, valid_session
@@ -103,7 +103,7 @@ describe EmailAddressesController do
   describe "PUT update" do
     describe "with valid params" do
       let(:bob) { Person.create(first_name: 'Bob', last_name: 'Jones') }
-      let(:valid_attributes) { {address: 'jfwoej@abc.com', person_id: bob.id} }
+      let(:valid_attributes) { {address: 'jfwoej@abc.com', contact_id: bob.id, contact_type: 'Person'} }
 
       it "updates the requested email_address" do
         email_address = EmailAddress.create! valid_attributes
@@ -149,7 +149,7 @@ describe EmailAddressesController do
 
   describe "DELETE destroy" do
       let(:bob) { Person.create(first_name: 'Bob', last_name: 'Jones') }
-      let(:valid_attributes) { {address: 'jfwoej@abc.com', person_id: bob.id} }
+      let(:valid_attributes) { {address: 'jfwoej@abc.com', contact_id: bob.id, contact_type: 'Person'} }
     it "destroys the requested email_address" do
       email_address = EmailAddress.create! valid_attributes
       expect {
